@@ -30,7 +30,8 @@ exports.handler = function(event, context, callback) {
     // the dropbox webhook to our netlify webhook. Otherwise, no dice.
     if (process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION) {
       const msg =
-        "Success: webhook received from Dropbox and forwarded to netlify!";
+        "Success: webhook received from Dropbox and forwarded to netlify: " +
+        process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION;
       fetch(process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION, {
         method: "POST",
         body: ""
