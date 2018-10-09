@@ -3,6 +3,7 @@ require("isomorphic-fetch");
 
 exports.handler = function(event, context, callback) {
   const { headers, queryStringParameters } = event;
+  console.log(event);
 
   // Dropbox hits this endpoint once to verify the app will respond to it.
   // It's called a "verification request".
@@ -28,13 +29,12 @@ exports.handler = function(event, context, callback) {
   } else if (headers["x-dropbox-signature"]) {
     // First make sure we even have our build hook URL. If we do, then forward
     // the dropbox webhook to our netlify webhook. Otherwise, no dice.
-    if (process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION) {
+    const webhookUrl = process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION;
+    if (webhookUrl) {
       const msg =
         "Success: webhook received from Dropbox and forwarded to: " +
-        (process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION
-          ? process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION
-          : "NO URL!");
-      fetch(process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION, {
+        (webhookUrl ? webhookUrl : "NO URL!");
+      fetch(webhookUrl, {
         method: "POST",
         body: ""
       }).then(res => {
@@ -42,7 +42,6 @@ exports.handler = function(event, context, callback) {
           statusCode: 200,
           body: msg
         });
-        console.log(process.env);
         console.log(msg);
       });
     } else {
