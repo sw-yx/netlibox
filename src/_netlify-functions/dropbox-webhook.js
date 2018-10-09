@@ -28,10 +28,10 @@ exports.handler = function(event, context, callback) {
   } else if (headers["x-dropbox-signature"]) {
     // First make sure we even have our build hook URL. If we do, then forward
     // the dropbox webhook to our netlify webhook. Otherwise, no dice.
-    if (process.env.NETLIFY_BUILD_HOOK_URL) {
+    if (process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION) {
       const msg =
         "Success: webhook received from Dropbox and forwarded to netlify!";
-      fetch(process.env.NETLIFY_BUILD_HOOK_URL, {
+      fetch(process.env.DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION, {
         method: "POST",
         body: ""
       }).then(res => {
@@ -43,7 +43,7 @@ exports.handler = function(event, context, callback) {
       });
     } else {
       const msg =
-        "Failed: the `NETLIFY_BUILD_HOOK_URL` environment variable is missing.";
+        "Failed: the `DROPBOX_WEBHOOK_FROM_NETLIFY_FUNCTION` environment variable is missing.";
       callback(null, {
         statusCode: 200,
         body: msg
