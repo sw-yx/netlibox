@@ -5,5 +5,5 @@
 
 [[redirects]]
   from = "/dropbox-webhook"
-  to = "https://api.netlify.com/build_hooks/5bbcc38a4ed62f4bbac3ebb7"
+  to = "/"
   status = 200
